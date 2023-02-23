@@ -52,7 +52,7 @@ public class Controller {
 			double morgenAntal, double middagAntal, double aftenAntal,
 			double natAntal) {
 		if (startDen.isAfter(slutDen)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Startdato må ikke være efter slutdato.");
 		}
 		DagligFast dagligFast = new DagligFast(startDen, slutDen, morgenAntal, middagAntal, aftenAntal, natAntal);
 		dagligFast.setLaegemiddel(laegemiddel);
@@ -72,10 +72,11 @@ public class Controller {
 			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
 			LocalTime[] klokkeSlet, double[] antalEnheder) {
 		if (startDen.isAfter(slutDen)) {
-			throw new IllegalArgumentException("Startdato skal være før slutdato");
+			throw new IllegalArgumentException("Startdato må ikke være efter slutdato.");
 		} else if (klokkeSlet.length != antalEnheder.length) {
-			throw new IllegalArgumentException("antal klokkeslet skal stemme overens med antal af antal enheder.");
+			throw new IllegalArgumentException("antal klokkeslet skal stemme overens med antallet af antal enheder.");
 		}
+
 		DagligSkaev dagligSkaev = new DagligSkaev(startDen, slutDen);
 		dagligSkaev.setLaegemiddel(laegemiddel);
 		for (int i = 0; i < klokkeSlet.length; i++) {
@@ -151,7 +152,6 @@ public class Controller {
         }
         return count;
     }
-
 
     public List<Patient> getAllPatienter() {
         return storage.getAllPatienter();

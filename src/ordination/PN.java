@@ -1,25 +1,17 @@
 package ordination;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class PN extends Ordination {
-
     private double antalEnheder;
     private final ArrayList<LocalDate> datoer = new ArrayList<>();
-
 
     public PN(LocalDate startDen, LocalDate slutDen, double antalEnheder) {
         super(startDen, slutDen);
         this.antalEnheder = antalEnheder;
     }
-
-    public PN(LocalDate startDen, LocalDate slutDen) {
-        super(startDen, slutDen);
-    }
-
 
     /**
      * Registrerer at der er givet en dosis paa dagen givesDen
@@ -30,42 +22,46 @@ public class PN extends Ordination {
      * @return
      */
     public boolean givDosis(LocalDate givesDen) {
-        if (givesDen.compareTo(getStartDen()) >= 0 && givesDen.compareTo(getSlutDen()) <= 0) {
-            if (datoer.size() == 0) {
-                datoer.add(givesDen);
-            } else {
-                for (int i = 0; i < datoer.size(); i++) {
-                    LocalDate dato = datoer.get(i);
-                    if (dato.isBefore(givesDen)) {
-                        datoer.add(i + 1, givesDen);
-                        break;
-                    }
-                }
-            }
-
-            return true;
+        boolean givet = true;
+        if (!givesDen.isBefore(getStartDen()) && !givesDen.isAfter(getSlutDen())) {
+            insertDato(givesDen);
         } else {
-            return false;
+            givet = false;
         }
+        return givet;
+    }
+
+    private void insertDato(LocalDate givesDen) {
+        boolean found = false;
+        int i = 0;
+        while (!found && i < datoer.size()) {
+            LocalDate dato = datoer.get(i);
+            if (dato.isAfter(givesDen)) {
+                found = true;
+            } else {
+                i++;
+            }
+        }
+        datoer.add(i, givesDen);
     }
 
     public double doegnDosis() {
+        double doegnDosis = 0;
         if (datoer.size() == 1){
-            return antalEnheder;
-        } else if (datoer.size() == 0) {
-            return 0;
+            doegnDosis = antalEnheder;
+        } else if (datoer.size() > 1) {
+            LocalDate førsteGivning = datoer.get(0);
+            LocalDate sidsteGivning = datoer.get(datoer.size() - 1);
+            long antalDage = ChronoUnit.DAYS.between(førsteGivning, sidsteGivning) + 1;
+            doegnDosis = (getAntalGangeGivet() * antalEnheder) / antalDage;
         }
-        LocalDate førsteGivning = datoer.get(0);
-        LocalDate sidsteGivning = datoer.get(datoer.size() - 1);
-        long antalDage = ChronoUnit.DAYS.between(førsteGivning, sidsteGivning) + 1;
-        return (getAntalGangeGivet() * antalEnheder) / antalDage;
+        return doegnDosis;
     }
 
     @Override
     public String getType() {
         return "PN";
     }
-
 
     public double samletDosis() {
         return antalEnheder * getAntalGangeGivet();
