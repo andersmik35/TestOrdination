@@ -1,11 +1,15 @@
 package ordination;
 
+import java.util.ArrayList;
+
 public class Patient {
     private String cprnr;
     private String navn;
     private double vaegt;
 
-    // TODO: Link til Ordination
+    private ArrayList<Ordination> ordinationArrayList = new ArrayList<>();
+
+    // TODO: Link til Ordination - done
 
     public Patient(String cprnr, String navn, double vaegt) {
         this.cprnr = cprnr;
@@ -33,7 +37,22 @@ public class Patient {
         this.vaegt = vaegt;
     }
 
-    //TODO: Metoder (med specifikation) til at vedligeholde link til Ordination
+    public ArrayList<Ordination> getOrdinationArrayList() {
+        return new ArrayList<>(ordinationArrayList);
+    }
+
+    public void addOrdination(Ordination ordination){
+        if(!ordinationArrayList.contains(ordination)){
+            ordinationArrayList.add(ordination);
+        }
+    }
+
+
+    public void removeOrdination(Ordination ordination){
+        if (ordinationArrayList.contains(ordination)){
+            ordinationArrayList.remove(ordination);
+        }
+    }
 
     @Override
     public String toString(){
