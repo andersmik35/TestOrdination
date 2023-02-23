@@ -76,7 +76,16 @@ public class Controller {
      * Pre: ordination og dato er ikke null
      */
     public void ordinationPNAnvendt(PN ordination, LocalDate dato) {
-        // TODO
+        if (ordination == null) {
+            throw new IllegalArgumentException("Ordinationen findes ikke");
+        }
+        if (dato == null) {
+            throw new IllegalArgumentException("Dato er null");
+        }
+        boolean givet = ordination.givDosis(dato);
+        if (!givet) {
+            throw new IllegalArgumentException("Datoen er ikke inde i perioden for ordinationen");
+        }
     }
 
     /**
@@ -94,11 +103,11 @@ public class Controller {
         }
         double enhed;
         double vaegt = patient.getVaegt();
-        if (vaegt <= 25){
+        if (vaegt <= 25) {
             enhed = laegemiddel.getEnhedPrKgPrDoegnLet();
         } else if (vaegt > 25 && vaegt <= 120) {
             enhed = laegemiddel.getEnhedPrKgPrDoegnNormal();
-        }else {
+        } else {
             enhed = laegemiddel.getEnhedPrKgPrDoegnTung();
         }
         return enhed;
