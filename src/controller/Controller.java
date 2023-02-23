@@ -39,8 +39,10 @@ public class Controller {
 	 */
 	public PN opretPNOrdination(LocalDate startDen, LocalDate slutDen,
 			Patient patient, Laegemiddel laegemiddel, double antal) {
-		// TODO
-		return null;
+		PN pn = new PN(startDen, slutDen, antal);
+		pn.setLaegemiddel(laegemiddel);
+		patient.addOrdination(pn);
+		return pn;
 	}
 
 	/**
@@ -74,11 +76,17 @@ public class Controller {
 			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
 			LocalTime[] klokkeSlet, double[] antalEnheder) {
 		if (startDen.isAfter(slutDen)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Startdato skal være før slutdato");
+		} else if (klokkeSlet.length != antalEnheder.length) {
+			throw new IllegalArgumentException("antal klokkeslet skal stemme overens med antal af antal enheder.");
 		}
-
-
-		return null;
+		DagligSkaev dagligSkaev = new DagligSkaev(startDen, slutDen);
+		dagligSkaev.setLaegemiddel(laegemiddel);
+		for (int i = 0; i < klokkeSlet.length; i++) {
+			dagligSkaev.opretDosis(klokkeSlet[i], antalEnheder[i]);
+		}
+		patient.addOrdination(dagligSkaev);
+		return dagligSkaev;
 	}
 
 	/**
