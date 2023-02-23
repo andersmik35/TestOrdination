@@ -26,48 +26,64 @@ public class Controller {
         return new Controller();
     }
 
-    /**
-     * Hvis startDato er efter slutDato kastes en IllegalArgumentException og
-     * ordinationen oprettes ikke
-     * Pre: startDen, slutDen, patient og laegemiddel er ikke null
-     * Pre: antal >= 0
-     *
-     * @return opretter og returnerer en PN ordination.
-     */
-    public PN opretPNOrdination(LocalDate startDen, LocalDate slutDen,
-                                Patient patient, Laegemiddel laegemiddel, double antal) {
-        // TODO
-        return null;
-    }
+	/**
+	 * Hvis startDato er efter slutDato kastes en IllegalArgumentException og
+	 * ordinationen oprettes ikke
+	 * Pre: startDen, slutDen, patient og laegemiddel er ikke null
+	 * Pre: antal >= 0
+	 * @return opretter og returnerer en PN ordination.
+	 */
+	public PN opretPNOrdination(LocalDate startDen, LocalDate slutDen,
+			Patient patient, Laegemiddel laegemiddel, double antal) {
+		PN pn = new PN(startDen, slutDen, antal);
+		pn.setLaegemiddel(laegemiddel);
+		patient.addOrdination(pn);
+		return pn;
+	}
 
-    /**
-     * Opretter og returnerer en DagligFast ordination. Hvis startDato er efter
-     * slutDato kastes en IllegalArgumentException og ordinationen oprettes ikke
-     * Pre: startDen, slutDen, patient og laegemiddel er ikke null
-     * Pre: margenAntal, middagAntal, aftanAntal, natAntal >= 0
-     */
-    public DagligFast opretDagligFastOrdination(LocalDate startDen,
-                                                LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
-                                                double morgenAntal, double middagAntal, double aftenAntal,
-                                                double natAntal) {
-        // TODO
-        return null;
-    }
+	/**
+	 * Opretter og returnerer en DagligFast ordination. Hvis startDato er efter
+	 * slutDato kastes en IllegalArgumentException og ordinationen oprettes ikke
+	 * Pre: startDen, slutDen, patient og laegemiddel er ikke null
+	 * Pre: margenAntal, middagAntal, aftanAntal, natAntal >= 0
+	 */
+	public DagligFast opretDagligFastOrdination(LocalDate startDen,
+			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
+			double morgenAntal, double middagAntal, double aftenAntal,
+			double natAntal) {
+		if (startDen.isAfter(slutDen)) {
+			throw new IllegalArgumentException();
+		}
+		DagligFast dagligFast = new DagligFast(startDen, slutDen, morgenAntal, middagAntal, aftenAntal, natAntal);
+		dagligFast.setLaegemiddel(laegemiddel);
+		patient.addOrdination(dagligFast);
+		return dagligFast;
+	}
 
-    /**
-     * Opretter og returnerer en DagligSkæv ordination. Hvis startDato er efter
-     * slutDato kastes en IllegalArgumentException og ordinationen oprettes ikke.
-     * Hvis antallet af elementer i klokkeSlet og antalEnheder er forskellige kastes også en IllegalArgumentException.
-     * <p>
-     * Pre: startDen, slutDen, patient og laegemiddel er ikke null
-     * Pre: alle tal i antalEnheder > 0
-     */
-    public DagligSkaev opretDagligSkaevOrdination(LocalDate startDen,
-                                                  LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
-                                                  LocalTime[] klokkeSlet, double[] antalEnheder) {
-        // TODO
-        return null;
-    }
+	/**
+	 * Opretter og returnerer en DagligSkæv ordination. Hvis startDato er efter
+	 * slutDato kastes en IllegalArgumentException og ordinationen oprettes ikke.
+	 * Hvis antallet af elementer i klokkeSlet og antalEnheder er forskellige kastes også en IllegalArgumentException.
+	 *
+	 * Pre: startDen, slutDen, patient og laegemiddel er ikke null
+	 * Pre: alle tal i antalEnheder > 0
+	 */
+	public DagligSkaev opretDagligSkaevOrdination(LocalDate startDen,
+			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
+			LocalTime[] klokkeSlet, double[] antalEnheder) {
+		if (startDen.isAfter(slutDen)) {
+			throw new IllegalArgumentException("Startdato skal være før slutdato");
+		} else if (klokkeSlet.length != antalEnheder.length) {
+			throw new IllegalArgumentException("antal klokkeslet skal stemme overens med antal af antal enheder.");
+		}
+		DagligSkaev dagligSkaev = new DagligSkaev(startDen, slutDen);
+		dagligSkaev.setLaegemiddel(laegemiddel);
+		for (int i = 0; i < klokkeSlet.length; i++) {
+			dagligSkaev.opretDosis(klokkeSlet[i], antalEnheder[i]);
+		}
+		patient.addOrdination(dagligSkaev);
+		return dagligSkaev;
+	}
 
     /**
      * En dato for hvornår ordinationen anvendes tilføjes ordinationen. Hvis
@@ -103,11 +119,11 @@ public class Controller {
         }
         double enhed;
         double vaegt = patient.getVaegt();
-        if (vaegt <= 25) {
+        if (vaegt <= 25){
             enhed = laegemiddel.getEnhedPrKgPrDoegnLet();
         } else if (vaegt > 25 && vaegt <= 120) {
             enhed = laegemiddel.getEnhedPrKgPrDoegnNormal();
-        } else {
+        }else {
             enhed = laegemiddel.getEnhedPrKgPrDoegnTung();
         }
         return enhed;
