@@ -53,8 +53,13 @@ public class Controller {
 			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
 			double morgenAntal, double middagAntal, double aftenAntal,
 			double natAntal) {
-		// TODO
-		return null;
+		if (startDen.isAfter(slutDen)) {
+			throw new IllegalArgumentException();
+		}
+		DagligFast dagligFast = new DagligFast(startDen, slutDen, morgenAntal, middagAntal, aftenAntal, natAntal);
+		dagligFast.setLaegemiddel(laegemiddel);
+		patient.addOrdination(dagligFast);
+		return dagligFast;
 	}
 
 	/**
@@ -68,7 +73,11 @@ public class Controller {
 	public DagligSkaev opretDagligSkaevOrdination(LocalDate startDen,
 			LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
 			LocalTime[] klokkeSlet, double[] antalEnheder) {
-		// TODO
+		if (startDen.isAfter(slutDen)) {
+			throw new IllegalArgumentException();
+		}
+
+
 		return null;
 	}
 
