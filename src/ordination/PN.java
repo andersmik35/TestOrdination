@@ -11,7 +11,6 @@ public class PN extends Ordination {
     private final ArrayList<LocalDate> datoer = new ArrayList<>();
 
 
-
     public PN(LocalDate startDen, LocalDate slutDen, double antalEnheder) {
         super(startDen, slutDen);
         this.antalEnheder = antalEnheder;
@@ -21,52 +20,50 @@ public class PN extends Ordination {
         super(startDen, slutDen);
     }
 
-    public PN(LocalDate startDen, LocalDate slutDen) {
-        super(startDen, slutDen);
-    }
 
     /**
      * Registrerer at der er givet en dosis paa dagen givesDen
      * Returnerer true hvis givesDen er inden for ordinationens gyldighedsperiode og datoen huskes
      * Retrurner false ellers og datoen givesDen ignoreres
+     *
      * @param givesDen
      * @return
      */
     public boolean givDosis(LocalDate givesDen) {
-       if (givesDen.isAfter(getStartDen()) && givesDen.isBefore(getSlutDen())) {
-           for (int i = 0; i < datoer.size(); i++) {
-               LocalDate dato = datoer.get(i);
-               if (dato.isBefore(givesDen)) {
-                   datoer.add(i + 1, givesDen);
-               }
-           }
-           datoer.add(givesDen);
-           return true;
-       }else {
-           return false;
-       }
+        if (givesDen.compareTo(getStartDen()) >= 0 && givesDen.compareTo(getSlutDen()) <= 0) {
+            if (datoer.size() == 0) {
+                datoer.add(givesDen);
+            } else {
+                for (int i = 0; i < datoer.size(); i++) {
+                    LocalDate dato = datoer.get(i);
+                    if (dato.isBefore(givesDen)) {
+                        datoer.add(i + 1, givesDen);
+                        break;
+                    }
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public double doegnDosis() {
+        if (datoer.size() == 1){
+            return antalEnheder;
+        } else if (datoer.size() == 0) {
+            return 0;
+        }
         LocalDate førsteGivning = datoer.get(0);
         LocalDate sidsteGivning = datoer.get(datoer.size() - 1);
-        long antalDage = ChronoUnit.DAYS.between(førsteGivning, sidsteGivning);
+        long antalDage = ChronoUnit.DAYS.between(førsteGivning, sidsteGivning) + 1;
         return (getAntalGangeGivet() * antalEnheder) / antalDage;
     }
 
     @Override
     public String getType() {
         return "PN";
-    }
-
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String getType() {
-        return null;
     }
 
 
@@ -76,6 +73,7 @@ public class PN extends Ordination {
 
     /**
      * Returnerer antal gange ordinationen er anvendt
+     *
      * @return
      */
     public int getAntalGangeGivet() {

@@ -142,7 +142,7 @@ public class Controller {
         int count = 0;
         for (Patient patient : storage.getAllPatienter()) {
             if (patient.getVaegt() > vægtStart && patient.getVaegt() < vægtSlut) {
-                for (Ordination ordination : patient.getOrdinationArrayList()) {
+                for (Ordination ordination : patient.getOrdinationer()) {
                     if (ordination.getLaegemiddel().equals(laegemiddel)) {
                         count++;
                     }
