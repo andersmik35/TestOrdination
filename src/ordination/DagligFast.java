@@ -1,9 +1,9 @@
 package ordination;
 
 import java.time.LocalDate;
-    private Dosis[] doses = new Dosis[4];
 
 public class DagligFast extends Ordination {
+    private Dosis[] doses = new Dosis[4];
     public DagligFast(LocalDate startDen, LocalDate slutDen) {
         super(startDen, slutDen);
     }
