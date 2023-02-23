@@ -7,7 +7,7 @@ public class Patient {
     private String navn;
     private double vaegt;
 
-    private ArrayList<Ordination> ordinationArrayList = new ArrayList<>();
+    private ArrayList<Ordination> ordinationer = new ArrayList<>();
 
     public Patient(String cprnr, String navn, double vaegt) {
         this.cprnr = cprnr;
@@ -35,20 +35,20 @@ public class Patient {
         this.vaegt = vaegt;
     }
 
-    public ArrayList<Ordination> getOrdinationArrayList() {
-        return new ArrayList<>(ordinationArrayList);
+    public ArrayList<Ordination> getOrdinationer() {
+        return new ArrayList<>(ordinationer);
     }
 
     public void addOrdination(Ordination ordination){
-        if(!ordinationArrayList.contains(ordination)){
-            ordinationArrayList.add(ordination);
+        if(!ordinationer.contains(ordination)){
+            ordinationer.add(ordination);
         }
     }
 
 
     public void removeOrdination(Ordination ordination){
-        if (ordinationArrayList.contains(ordination)){
-            ordinationArrayList.remove(ordination);
+        if (ordinationer.contains(ordination)){
+            ordinationer.remove(ordination);
         }
     }
 
