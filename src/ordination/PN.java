@@ -17,6 +17,10 @@ public class PN extends Ordination {
         this.antalEnheder = antalEnheder;
     }
 
+    public PN(LocalDate startDen, LocalDate slutDen) {
+        super(startDen, slutDen);
+    }
+
     /**
      * Registrerer at der er givet en dosis paa dagen givesDen
      * Returnerer true hvis givesDen er inden for ordinationens gyldighedsperiode og datoen huskes
@@ -49,6 +53,11 @@ public class PN extends Ordination {
     @Override
     public String getType() {
         return "PN";
+    }
+
+    @Override
+    public String getType() {
+        return null;
     }
 
 

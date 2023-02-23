@@ -99,27 +99,54 @@ public class Controller {
 		// TODO
 	}
 
-	/**
-	 * Den anbefalede dosis for den pågældende patient (der skal tages hensyn
-	 * til patientens vægt). Det er en forskellig enheds faktor der skal
-	 * anvendes, og den er afhængig af patientens vægt.
-	 * Pre: patient og lægemiddel er ikke null
-	 */
-	public double anbefaletDosisPrDoegn(Patient patient, Laegemiddel laegemiddel) {
-		//TODO
-		return 0;
-	}
+    /**
+     * Den anbefalede dosis for den pågældende patient (der skal tages hensyn
+     * til patientens vægt). Det er en forskellig enheds faktor der skal
+     * anvendes, og den er afhængig af patientens vægt.
+     * Pre: patient og lægemiddel er ikke null
+     */
+    public double anbefaletDosisPrDoegn(Patient patient, Laegemiddel laegemiddel) {
+        if (laegemiddel == null) {
+            throw new IllegalArgumentException("Laegemidlet findes ikke");
+        }
+        if (patient == null) {
+            throw new IllegalArgumentException("Patienten findes ikke");
+        }
+        double enhed;
+        double vaegt = patient.getVaegt();
+        if (vaegt <= 25){
+            enhed = laegemiddel.getEnhedPrKgPrDoegnLet();
+        } else if (vaegt > 25 && vaegt <= 120) {
+            enhed = laegemiddel.getEnhedPrKgPrDoegnNormal();
+        }else {
+            enhed = laegemiddel.getEnhedPrKgPrDoegnTung();
+        }
+        return enhed;
+    }
 
-	/**
-	 * For et givent vægtinterval og et givent lægemiddel, hentes antallet af
-	 * ordinationer.
-	 * Pre: laegemiddel er ikke null
-	 */
-	public int antalOrdinationerPrVægtPrLægemiddel(double vægtStart,
-			double vægtSlut, Laegemiddel laegemiddel) {
-		// TODO
-		return 0;
-	}
+    /**
+     * For et givent vægtinterval og et givent lægemiddel, hentes antallet af
+     * ordinationer.
+     * Pre: laegemiddel er ikke null
+     */
+    public int antalOrdinationerPrVægtPrLægemiddel(double vægtStart,
+                                                   double vægtSlut, Laegemiddel laegemiddel) {
+        if (laegemiddel == null) {
+            throw new IllegalArgumentException("Laegemidlet findes ikke");
+        }
+        int count = 0;
+        for (Patient patient : storage.getAllPatienter()) {
+            if (patient.getVaegt() > vægtStart && patient.getVaegt() < vægtSlut) {
+                for (Ordination ordination : patient.getOrdinationArrayList()) {
+                    if (ordination.getLaegemiddel().equals(laegemiddel)) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
 
 	public List<Patient> getAllPatienter() {
 		return storage.getAllPatienter();
