@@ -5,14 +5,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DagligSkaev extends Ordination {
-    private String name;
     private LocalTime tid;
     private double antal;
     private final ArrayList<Dosis> doser = new ArrayList<>();
 
-    public DagligSkaev(LocalDate startDen, LocalDate slutDen, String name, LocalTime tid, double antal) {
+    public DagligSkaev(LocalDate startDen, LocalDate slutDen, LocalTime tid, double antal) {
         super(startDen, slutDen);
-        this.name = name;
         this.tid = tid;
         this.antal = antal;
     }
