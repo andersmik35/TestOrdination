@@ -137,6 +137,10 @@ public class Controller {
      */
     public int antalOrdinationerPrVægtPrLægemiddel(double vægtStart,
                                                    double vægtSlut, Laegemiddel laegemiddel) {
+        if(vægtStart > vægtSlut){
+            throw new IllegalArgumentException("Vægtstart kan ikke være højere end vægtslut");
+        }
+
         if (laegemiddel == null) {
             throw new IllegalArgumentException("Laegemidlet findes ikke");
         }
