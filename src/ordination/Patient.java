@@ -32,6 +32,10 @@ public class Patient {
     }
 
     public void setVaegt(double vaegt){
+        if (vaegt <= 0) {
+            throw new IllegalArgumentException("vægt skal være større end 0.");
+        }
+
         this.vaegt = vaegt;
     }
 
