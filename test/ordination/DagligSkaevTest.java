@@ -32,5 +32,21 @@ class DagligSkaevTest {
         double tc2 = dagligSkaev.samletDosis();
         assertEquals(0, tc2);
     }
+    @Test
+    void doegnDosisTC1() {
+        dagligSkaev.opretDosis(LocalTime.of(7, 0), 3);
+        dagligSkaev.opretDosis(LocalTime.of(12, 0), 2);
+        dagligSkaev.opretDosis(LocalTime.of(18, 0), 2);
+        double tc1 = dagligSkaev.doegnDosis();
+        assertEquals(7, tc1);
+    }
+    @Test
+    void doegnDosisTC2() {
+        dagligSkaev.opretDosis(LocalTime.of(7, 0), 0);
+        dagligSkaev.opretDosis(LocalTime.of(12, 0), 0);
+        dagligSkaev.opretDosis(LocalTime.of(18, 0), 0);
+        double tc2 = dagligSkaev.doegnDosis();
+        assertEquals(0, tc2);
+    }
 
 }
