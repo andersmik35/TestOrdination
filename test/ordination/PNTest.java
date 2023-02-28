@@ -98,4 +98,16 @@ class PNTest {
         assertEquals(2, tc);
 
     }
+    @Test
+    void samletDosisTC1() {
+        double tc = pn.samletDosis();
+        assertEquals(0, tc);
+    }
+    @Test
+    void samletDosisTC2() {
+        pn.givDosis(LocalDate.of(2023, 02, 20));
+        pn.givDosis(LocalDate.of(2023, 02, 21));
+        double tc = pn.samletDosis();
+        assertEquals(4, tc);
+    }
 }

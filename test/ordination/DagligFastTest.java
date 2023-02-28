@@ -13,13 +13,23 @@ class DagligFastTest {
 
     @Test
     void samletDosisTC1() {
-        dagligFast = new DagligFast(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 4), 1, 2, 0, 0);
+        dagligFast = new DagligFast(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 4), 1, 2, 0, 0);
         assertEquals(12, dagligFast.samletDosis());
     }
     @Test
     void samletDosisTC2() {
-        dagligFast = new DagligFast(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 4), 0, 0, 0, 0);
+        dagligFast = new DagligFast(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 4), 0, 0, 0, 0);
         assertEquals(0, dagligFast.samletDosis());
+    }
+    @Test
+    void doegnDosisTC1() {
+        dagligFast = new DagligFast(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 4), 1, 2, 0, 0);
+        assertEquals(3, dagligFast.doegnDosis());
+    }
+    @Test
+    void doegnDosisTC2() {
+        dagligFast = new DagligFast(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 4), 0, 0, 0, 0);
+        assertEquals(0, dagligFast.doegnDosis());
     }
 
 
